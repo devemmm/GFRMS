@@ -214,13 +214,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   inputField: {
-    borderColor: "orange",
+    borderColor: "#fff",
     borderBottomWidth: 2,
     height: HEIGHT * 0.05,
     paddingRight: 10,
     fontSize: 18,
     fontWeight: "bold",
-    color: "#fff",
+    color: "orange",
   },
   loginButton: {
     backgroundColor: "#fff",
