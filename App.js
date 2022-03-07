@@ -2,6 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 
 import ResolveScreen from "./src/screens/splash/ResolveScreen";
@@ -17,7 +18,40 @@ const buttomTabNavigator = createBottomTabNavigator();
 
 const mainFlow = () => {
   return (
-    <buttomTabNavigator.Navigator>
+    <buttomTabNavigator.Navigator
+      initialRouteName="Home"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          if (route.name === "Home") {
+            return (
+              <FontAwesome5
+                name={focused ? "indent" : "indent"}
+                size={size}
+                color={color}
+              />
+            );
+          } else if (route.name === "Account") {
+            return (
+              <MaterialCommunityIcons
+                name={focused ? "account" : "account"}
+                size={size}
+                color={color}
+              />
+            );
+          } else if (route.name === "History") {
+            return (
+              <MaterialCommunityIcons
+                name={focused ? "material-design" : "material-design"}
+                size={size}
+                color={color}
+              />
+            );
+          }
+        },
+        tabBarInactiveTintColor: "grey",
+        tabBarActiveTintColor: "green",
+      })}
+    >
       <buttomTabNavigator.Screen
         name="Home"
         component={HomeScreen}
