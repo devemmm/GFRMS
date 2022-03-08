@@ -12,6 +12,9 @@ import SignupScreen from "./src/screens/SignupScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import HistoryScreen from "./src/screens/HistoryScreen";
 import AccountScreen from "./src/screens/AccountScreen";
+import TermAndPrivacy from "./src/screens/TermAndPrivacy";
+import HelpAndSupport from "./src/screens/HelpAndSupport";
+import EditProfile from "./src/screens/EditProfile";
 
 const stackNavigator = createStackNavigator();
 const buttomTabNavigator = createBottomTabNavigator();
@@ -112,6 +115,28 @@ const App = () => {
         <stackNavigator.Screen
           name="mainFlow"
           component={mainFlow}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <stackNavigator.Screen
+          name="TermAndPrivacy"
+          component={TermAndPrivacy}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <stackNavigator.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <stackNavigator.Screen
+          name="HelpAndSupport"
+          component={HelpAndSupport}
           options={{
             headerShown: false,
           }}

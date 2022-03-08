@@ -86,7 +86,10 @@ const AccountScreen = ({ navigation }) => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.itemIcon}>
+        <TouchableOpacity
+          style={styles.itemIcon}
+          onPress={() => navigation.navigate("TermAndPrivacy")}
+        >
           <AntDesign name="profile" style={{ color: "orange", fontSize: 40 }} />
           <View style={{ justifyContent: "flex-start" }}>
             <Text style={styles.itemText}>Term & Privacy</Text>
