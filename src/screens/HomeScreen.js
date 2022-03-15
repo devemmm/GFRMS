@@ -5,16 +5,24 @@ import Disease from '../components/Disease';
 import AtmosphareItem from '../components/AtmosphareItem';
 import SwitchButton from '../components/SwitchButton';
 import Clock from '../components/Clock';
+import gfrsApi from "../api/gfrsApi"
 
 const reducer = (state, action)=>{
 
     switch(action.type){
         case 'temperature':
             
-            if(action.payload.temperature > 50){
+            if(action.payload.temperature){
                 return {...state}
             }   
             return {...state, temperature: action.payload.temperature}
+
+        case 'humity':
+        
+            if(action.payload.humudity){
+                return {...state}
+            }   
+            return {...state, humudity: action.payload.humudity}
 
         case 'fun':
             return {...state, fun: action.payload.fun, both: "OFF", heater: "OFF"}
@@ -34,8 +42,30 @@ const HomeScreen = ({navigation})=>{
     useEffect(()=>{
         const interval = setInterval(() => {
 
-            // fetch('/https://jsonplaceholder.typicode.com/posts', )
-            dispatch({type: 'temperature', payload: { temperature: temperature + 2}})
+            let fid = '623093005533f833a0561c5d'
+            let type = 'last'
+
+            const url = `https://gfrms-api.herokuapp.com/data?fid=${fid}&type=${type}`
+
+            fetch(url, {
+                method: "get",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                }
+            })
+            .then((response)=> response.json())
+            .then((res)=>{
+            
+                console.log("here")
+                // console.log(res.data)
+                dispatch({type: 'fun', payload: {fun: res.data.fun == 0 ? "OFF": "ON"}})
+                dispatch({type: 'temperature', payload: { temperature: res.data.temperature}})
+                dispatch({type: 'humity', payload: { humudity: res.data.humudity}})
+            }).catch((error)=>{
+                console.log("something went wrong")
+            })
+            
         }, 3000);
 
         return ()=> clearInterval(interval)
