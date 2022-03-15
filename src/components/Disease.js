@@ -5,6 +5,7 @@ import {HEIGHT, WIDTH } from '../constants/contants'
 import DiseaseDetails from './DiseaseDetails';
 
 const Disease = ({diseases})=>{
+
     return(
         <View style={{marginLeft: 20}}>
             <Text style={styles.title}>Trending Diseases</Text>
@@ -29,7 +30,10 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 10
+        marginBottom: 10,
+        textAlign: 'center',
+        textTransform: 'uppercase',
+        color: 'green'
     }
 });
 

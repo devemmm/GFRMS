@@ -1,23 +1,15 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import {View, Text, StyleSheet} from 'react-native';
-import {HEIGHT, WIDTH } from '../constants/contants'
+import {Text, StyleSheet} from 'react-native';
 
-const SwitchButton = ({title, action, color})=>{
+const SwitchButton = ({title, action, triger})=>{
 
     return(
         <TouchableOpacity 
-            style={{
-                height: HEIGHT * .09,
-                width: 150,
-                backgroundColor: `${color}`,
-                borderRadius: 10,
-                justifyContent: 'center',
-                alignItems: 'center'                                                                                
-            }}
-        >
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>{title}</Text>
-            <Text style ={{fontSize: 20, fontWeight: 'bold'}}>{action}</Text>    
+            style={{backgroundColor: action === "OFF" ? 'red': 'green' , width: '30%', height: 35, borderRadius: 5, marginHorizontal: 10, alignItems: 'center', justifyContent: 'center'}}
+                onPress = {()=>triger({type: title, action})}
+            >
+            <Text style={{color: 'black', fontWeight: 'bold'}} >{title} {title === "Both" ? "OFF" : action}</Text>
         </TouchableOpacity>
     )
 }

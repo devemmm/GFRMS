@@ -3,16 +3,13 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import {HEIGHT, WIDTH } from '../constants/contants'
 
 const DiseaseDetails = ({item})=>{
-    // console.log(disease)
     return(
         <View style= {styles.container}>
-            {/* <Image source = {{uri: item.image}} style = {styles.image}/> */}
-            <View style={{height: 100, width: 100, backgroundColor: 'red', marginLeft: 10, borderRadius: 10}}/>
-
+            <Image source = {{uri: item.image}} style = {styles.image}/>
             <View style={{
                         marginLeft: 10,
                         alignItems: 'center',
-                        justifyContent: 'space-around'
+                        justifyContent: 'space-around',
                     }}>
                 <Text style = {{fontSize: 16, fontWeight: 'bold'}}>{item.name}</Text>
                 <Text>({item.type})</Text>
@@ -29,11 +26,15 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         height: HEIGHT * .15,
         width: WIDTH * (3/4),
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        borderRadius: 10
     },
     image:{
-        height: 200,
-        width: 200
+        width: '42%', 
+        height: '100%', 
+        borderRadius: 5, 
+        resizeMode: 'stretch',
+        borderRadius: 10
     }
 });
 

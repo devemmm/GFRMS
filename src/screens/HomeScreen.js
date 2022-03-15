@@ -1,26 +1,66 @@
-import React from 'react';
+import React, {useReducer, useEffect} from 'react';
 import {View, Text, Platform, TouchableOpacity, StatusBar, StyleSheet } from 'react-native';
-import { HEIGHT, WIDTH } from '../constants/contants'
+import { HEIGHT, WIDTH, diseases } from '../constants/contants'
 import Disease from '../components/Disease';
 import AtmosphareItem from '../components/AtmosphareItem';
 import SwitchButton from '../components/SwitchButton';
 import Clock from '../components/Clock';
 
+const reducer = (state, action)=>{
+
+    switch(action.type){
+        case 'temperature':
+            
+            if(action.payload.temperature > 50){
+                return {...state}
+            }   
+            return {...state, temperature: action.payload.temperature}
+
+        case 'fun':
+            return {...state, fun: action.payload.fun, both: "OFF", heater: "OFF"}
+        case 'both':
+            return {...state, both: action.payload.both, fun: "OFF", heater: "OFF"}
+        case 'heater':
+            return {...state, heater: action.payload.heater, fun: "OFF", both: "OFF"}
+
+        default : 
+            return state
+    }
+}
+
 const HomeScreen = ({navigation})=>{
-    const diseases = [
-        {
-            id: 1,
-            name: 'Africa Mole Cricket',
-            type: 'Insect',
-            image: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.thoughtco.com%2Fthmb%2FgjYBUv9VdnXM96hZhxEKMiwfA8Q%3D%2F2576x2576%2Fsmart%2Ffilters%3Ano_upscale()%2Fladybird-brittany-france-502864869-5897a8315f9b5874ee735fca.jpg&imgrefurl=https%3A%2F%2Fwww.thoughtco.com%2Finsects-profile-130266&tbnid=g5xdTXJtVU348M&vet=12ahUKEwiz_4WT4ZPzAhVF44UKHS4MDBcQMygIegUIARDiAQ..i&docid=5lC5WZBlMif8SM&w=2576&h=2576&q=insect&ved=2ahUKEwiz_4WT4ZPzAhVF44UKHS4MDBcQMygIegUIARDiAQ',
-        },
-        {
-            id: 2,
-            name: 'Other deseas',
-            type: 'Insect',
-            image: 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.thoughtco.com%2Fthmb%2FgjYBUv9VdnXM96hZhxEKMiwfA8Q%3D%2F2576x2576%2Fsmart%2Ffilters%3Ano_upscale()%2Fladybird-brittany-france-502864869-5897a8315f9b5874ee735fca.jpg&imgrefurl=https%3A%2F%2Fwww.thoughtco.com%2Finsects-profile-130266&tbnid=g5xdTXJtVU348M&vet=12ahUKEwiz_4WT4ZPzAhVF44UKHS4MDBcQMygIegUIARDiAQ..i&docid=5lC5WZBlMif8SM&w=2576&h=2576&q=insect&ved=2ahUKEwiz_4WT4ZPzAhVF44UKHS4MDBcQMygIegUIARDiAQ',
+    const [{temperature, humudity, windSpeed, rainfall, fun, both, heater}, dispatch]= useReducer(reducer, {temperature: 0, humudity: 61, rainfall: 0, windSpeed: 3.9, fun: 'OFF', both: 'OFF', heater: 'OFF'})
+
+    useEffect(()=>{
+        const interval = setInterval(() => {
+
+            // fetch('/https://jsonplaceholder.typicode.com/posts', )
+            dispatch({type: 'temperature', payload: { temperature: temperature + 2}})
+        }, 3000);
+
+        return ()=> clearInterval(interval)
+    }, [temperature])
+
+    const handleButtonPress = ({type, action})=>{
+
+        let isOn;
+        switch(type){
+            case 'Fun':
+                isOn = fun === "ON"
+                return dispatch({type: 'fun', payload: {fun: isOn ? "OFF" : "ON"}})
+
+            case 'Both':
+                isOn = both === "ON"
+                return dispatch({type: 'both', payload: {both: isOn ? "OFF" : "ON"}})
+            
+            case 'Heater':
+                isOn = heater === "ON"
+                return dispatch({type: 'heater', payload: {heater: isOn ? "OFF" : "ON"}})
+    
+            default:
+                return;
         }
-    ]
+    }
     return(
         <View style = {styles.container}>
 
@@ -40,17 +80,19 @@ const HomeScreen = ({navigation})=>{
             </View>
             <View style= {styles.humudityBord}>
                 <View style= {{flexDirection: 'row',justifyContent: 'space-around'}}>
-                    <AtmosphareItem icon = "temperature-low"  color = "green" degree = {62} dtype = "F" name= "Temperature"/>
-                    <AtmosphareItem icon = "" color = "#537ec9" degree = {61} dtype = "%" name= "Humudity"/>
+                    <AtmosphareItem icon = "temperature-low"  color = "green" degree = {temperature} dtype = "F" name= "Temperature"/>
+                    <AtmosphareItem icon = "" color = "#537ec9" degree = {humudity} dtype = "%" name= "Humudity"/>
                 </View>
                 <View style = {{flexDirection: 'row',justifyContent: 'space-around'}}>
-                    <AtmosphareItem icon = "cloud-moon-rain" color = "#8e53c9" degree = {0.0} dtype = "mm" name= "Rainfall"/>
-                    <AtmosphareItem icon = "" color = "#c9c953" degree = {3.9} dtype = "m/s" name= "windSpeed"/>
+                    <AtmosphareItem icon = "cloud-moon-rain" color = "#8e53c9" degree = {rainfall} dtype = "mm" name= "Rainfall"/>
+                    <AtmosphareItem icon = "" color = "#c9c953" degree = {windSpeed} dtype = "m/s" name= "windSpeed"/>
                 </View>
             </View>
-            <View style={styles.buttonCard}>
-                <SwitchButton title = "Fun" action = "OFF" color= "red"/>
-                <SwitchButton title = "Heater" action = "ON" color= "206e37"/>
+
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', width: '90%', marginBottom: 20}}>
+                <SwitchButton title="Fun" action={fun} triger={handleButtonPress}/>
+                <SwitchButton title="Both" action={both} triger={handleButtonPress}/>
+                <SwitchButton title="Heater" action={heater} triger={handleButtonPress}/>
             </View>
 
             <View style = {{alignItems: 'center'}}>
