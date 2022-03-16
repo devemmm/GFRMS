@@ -20,7 +20,8 @@ const reducer = (state, action)=>{
             return {...state, both: action.payload.both, fun: "OFF", heater: "OFF"}
         case 'heater':
             return {...state, heater: action.payload.heater, fun: "OFF", both: "OFF"}
-
+        case 'funHeater':
+            return { ...state, fun: action.payload.fun, heater: action.payload.heater}
         default : 
             return state
     }
@@ -46,8 +47,7 @@ const HomeScreen = ({navigation})=>{
             })
             .then((response)=> response.json())
             .then((res)=>{
-                dispatch({type: 'fun', payload: {fun: res.data.fun == 0 ? "OFF": "ON"}})
-                dispatch({type: 'heater', payload: {heater: res.data.heater == 0 ? "OFF": "ON"}})
+                dispatch({type: 'funHeater', payload : {fun: res.data.fun == 0 ? "OFF": "ON", heater: res.data.heater == 0 ? "OFF": "ON" }})
                 dispatch({type: 'temperature', payload: { temperature: res.data.temperature}})
                 dispatch({type: 'humidity', payload: { humidity: res.data.humidity}})
             }).catch((error)=>{
@@ -73,7 +73,6 @@ const HomeScreen = ({navigation})=>{
             case 'Fun':
                 h = 0
                 fun === CASETYPE[0] ? f = 0 : f = 1
-                console.log(f)
                 break;
             
             case 'Both':
@@ -95,9 +94,11 @@ const HomeScreen = ({navigation})=>{
         })
         .then((response)=> response.json())
         .then((res)=>{
-            console.log(res)
-            console.log("resoonse are here")
-            alert('done theresponse are in console')
+            if(res.status === 400){
+                alert(`something went wrong, ${res.errorMessage}`)
+            }else{
+                alert(`Instruction setted Successfully !!!`)
+            }
         })
         .catch((error)=>{
             alert(`something went wrong because ${error.message}`)
