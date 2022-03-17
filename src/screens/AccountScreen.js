@@ -11,7 +11,6 @@ import {
 
 const AccountScreen = ({ navigation }) => {
   const { state } = useContext(AuthContext);
-  // console.log(state)
 
   return (
     <View style={styles.container}>
@@ -38,7 +37,7 @@ const AccountScreen = ({ navigation }) => {
           >
             <View>
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                Emm devemm
+                {state.user.fname} {state.user.lname}
               </Text>
               <Text
                 style={{
@@ -48,17 +47,17 @@ const AccountScreen = ({ navigation }) => {
                   paddingVertical: 5,
                 }}
               >
-                myid@google.com
+                {state.user.email}
               </Text>
               <Text style={{ color: "orange", fontSize: 16 }}>
-                +250788596281
+                {state.user.phone}
               </Text>
             </View>
             <View>
               <Image
-                style={{ height: 100, width: 100 }}
+                style={{ height: 100, width: 100, borderRadius: 50, resizeMode: 'stretch'}}
                 source={{
-                  uri: "https://reactnative.dev/img/tiny_logo.png",
+                  uri: state.user.avatar
                 }}
               />
             </View>
