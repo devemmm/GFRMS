@@ -11,7 +11,7 @@ const TermAndPrivacy = ({ navigation }) => {
         style={{
           height: 100,
           width: WIDTH,
-          backgroundColor: "grey",
+          backgroundColor: "green",
           alignItems: "center",
           flexDirection: "row",
           justifyContent: "flex-start",

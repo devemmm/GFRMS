@@ -98,7 +98,10 @@ const AccountScreen = ({ navigation }) => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.itemIcon}>
+        <TouchableOpacity 
+          style={styles.itemIcon}
+          onPress={()=>navigation.navigate('HelpAndSupport')}
+          >
           <Entypo
             name="help-with-circle"
             style={{ color: "orange", fontSize: 40 }}
