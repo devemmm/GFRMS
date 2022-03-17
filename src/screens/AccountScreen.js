@@ -10,8 +10,7 @@ import {
 } from "@expo/vector-icons";
 
 const AccountScreen = ({ navigation }) => {
-  const { state } = useContext(AuthContext);
-
+  const { state , signout} = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <View
@@ -115,7 +114,10 @@ const AccountScreen = ({ navigation }) => {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.itemIcon}>
+        <TouchableOpacity 
+          style={styles.itemIcon}
+          onPress = {()=> signout({navigation})}
+        >
           <AntDesign
             name="setting"
             style={{

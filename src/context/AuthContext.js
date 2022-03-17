@@ -5,7 +5,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const authReducer = (state, action)=>{
     switch(action.type){
         case 'login': {
-            return {...state, token: action.payload.token, user: action.payload}
+            return {...state, user: action.payload}
+        }
+        case 'sign_out':{
+            return {...state, user: {}}
         }
         case 'local_signin':
             return {...state, user: action.payload}
@@ -58,6 +61,17 @@ const tryLocalSignin = dispatch => async({navigation})=>{
     }
   }
 
+const signout = dispatch => async({navigation})=>{
+
+    try {
+        await AsyncStorage.removeItem('GFRS_USER')
+        dispatch({type: 'sign_out'})
+        navigation.navigate('Signin')
+
+    } catch (error) {
+        navigation.navigate('Signin')
+    }
+}
 export const {Context, Provider} = createDataContext(
     authReducer,
     {
@@ -65,7 +79,8 @@ export const {Context, Provider} = createDataContext(
         tryLocalSignin,
         throwError, 
         clearErrorMessage, 
-        setActivityIndicator
+        setActivityIndicator,
+        signout
     },
     {
         user: {},
