@@ -61,6 +61,7 @@ const SigninScreenn = ({ navigation }) => {
                 clearErrorMessage();
                 setPassword(input);
               }}
+              secureTextEntry
             />
 
             {/*     ---------------------------END OF FORM --------------------------- */}
