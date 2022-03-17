@@ -1,8 +1,37 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { HEIGHT, WIDTH, history } from "../constants/contants";
+import React, {useState, useEffect} from "react";
+import { View, Text, StyleSheet, ScrollView,ActivityIndicator } from "react-native";
+import { HEIGHT, WIDTH } from "../constants/contants";
+import { gfrsApi } from '../api/gfrsApi'
 
 const HistoryScreen = ({ navigation }) => {
+
+  const [history, setHistory ] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  useEffect(()=>{
+
+    const fid = '623093005533f833a0561c5d'
+
+    setIsLoading(true)
+    fetch(`${gfrsApi}/data?fid=${fid}&type=all`, {
+      method: "get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }
+    })
+    .then((response)=> response.json())
+    .then((res)=>{
+      setIsLoading(false)
+      if(res.status !== 200){
+        alert('something went wrong contact system administrator')
+      }
+      setHistory(res.data)
+    })
+    .catch((error)=>{
+      setIsLoading(false)
+      alert(`something went wrong because ${error.message}`)
+    })
+  }, [])
   return (
     <View style={styles.container}>
       <View
@@ -25,55 +54,50 @@ const HistoryScreen = ({ navigation }) => {
           History
         </Text>
       </View>
-      <View style={{ flex: 1 }}>
-        {history.map((date, dateIndex) => {
-          return (
-            <View key={dateIndex.toString()}>
-              <Text style={styles.dateTitle}>{date.date}</Text>
-              <View key={dateIndex.toString()} style={styles.head}>
-                <Text style={styles.headItem}>time</Text>
-                <Text style={styles.headItem}>action</Text>
-                <Text style={styles.headItem}>temperature</Text>
-                <Text style={styles.headItem}>status</Text>
-              </View>
-              {date.payload.map((item, index) => {
-                return (
-                  <View key={index.toString()} style={styles.body}>
-                    <Text style={styles.headItem}>{item.time}</Text>
-                    <Text style={styles.headItem}>{item.action}</Text>
-                    <Text style={styles.headItem}>{item.temperature}</Text>
-                    <Text
-                      style={
-                        item.status === "success"
-                          ? [
-                              styles.headItem,
-                              {
-                                backgroundColor: "orange",
-                                borderRadius: 10,
-                                color: "#fff",
-                                paddingHorizontal: 5,
-                              },
-                            ]
-                          : [
-                              styles.headItem,
-                              {
-                                backgroundColor: "red",
-                                color: "#fff",
-                                borderRadius: 10,
-                                paddingHorizontal: 5,
-                              },
-                            ]
-                      }
-                    >
-                      {item.status}
-                    </Text>
+
+      {
+        isLoading ? (
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+
+            <ActivityIndicator size="large" color="green" />
+            <Text>loading ...</Text>
+          </View>
+        ):
+        (
+          <ScrollView style={{ flex: 1 }}>
+            {history.map((date, dateIndex) => {
+              return (
+                <View key={dateIndex.toString()}>
+                  <Text style={styles.dateTitle}>{date.date}</Text>
+                  <View key={dateIndex.toString()} style={styles.head}>
+                    <Text style={styles.headItem}>Time</Text>
+                    <Text style={styles.headItem}>Temperature</Text>
+                    <Text style={styles.headItem}>Humidity</Text>
+                    <Text style={styles.headItem}>Heater</Text>
+                    <Text style={styles.headItem}>Fan</Text>
                   </View>
-                );
-              })}
-            </View>
-          );
-        })}
-      </View>
+                  {date.action.map((item, index) => {
+
+                    const dateTimeBuffer = item.createdAt.split('T')
+                    const date = dateTimeBuffer[0]
+                    const time = dateTimeBuffer[1].split('.')[0]
+
+                    return (
+                      <View key={index.toString()} style={styles.body}>
+                        <Text style={styles.headItem}>{time}</Text>
+                        <Text style={styles.headItem}>{item.temperature}</Text>
+                        <Text style={styles.headItem}>{item.humidity}</Text>
+                        <Text style={styles.headItem}>{item.heater === 1 ? "ON" : "OFF"}</Text>
+                        <Text style={styles.headItem}>{item.fun === 1 ? "ON" : "OFF"}</Text>
+                      </View>
+                    );
+                  })}
+                </View>
+              );
+            })}
+          </ScrollView>
+        )
+      }
     </View>
   );
 };
