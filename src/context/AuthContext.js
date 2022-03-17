@@ -8,7 +8,7 @@ const authReducer = (state, action)=>{
             return {...state, token: action.payload.token, user: action.payload}
         }
         case 'local_signin':
-            return {...state, token: action.payload}
+            return {...state, user: action.payload}
         case 'loading':{
             return { ...state, isLoading: action.payload}
         }
@@ -32,7 +32,7 @@ const signin = dispatch => async({email, password}, callback)=>{
         user.token = user.tokens[((user.tokens).length)-1].token;
         delete user.tokens;
 
-        AsyncStorage.setItem('GFRS_TOKEN', user.token)
+        AsyncStorage.setItem('GFRS_USER', JSON.stringify(user))
         dispatch({type: 'login', payload: user})
 
         dispatch({type: 'loading', payload: false})
@@ -48,10 +48,10 @@ const clearErrorMessage = dispatch => ()=>dispatch({type: 'clear_error_message'}
 
 const tryLocalSignin = dispatch => async({navigation})=>{
     
-    const token = await AsyncStorage.getItem('GFRS_TOKEN')
+    const user = await AsyncStorage.getItem('GFRS_USER')
   
-    if(token){
-      dispatch({type: 'local_signin', payload: token})
+    if(user){
+      dispatch({type: 'local_signin', payload: JSON.parse(user)})
       navigation.navigate("mainFlow")
     }else{
       navigation.navigate("Signin")
@@ -68,8 +68,7 @@ export const {Context, Provider} = createDataContext(
         setActivityIndicator
     },
     {
-        token: null, 
-        user: null,
+        user: {},
         errorMessage: '', 
         isLoading: false
     }

@@ -25,8 +25,39 @@ const reducer = (state, action)=>{
 const EditProfile = ({ navigation }) => {
 
   const { state } = useContext(AuthContext);
-  const [{fname, lname, phone, password, cpassword}, dispatch] = useReducer(reducer, {fname: '', lname: '', phone : '', password: '', cpassword: ''})
-  
+  const user = state.user
+  const [{fname, lname, phone, password, cpassword}, dispatch] = useReducer(reducer, {fname: user.fname, lname: user.lname, phone : user.phone, password: '', cpassword: ''})
+
+  const handleChangeProfile = ()=>{
+    if(phone.length !== 10){
+      return alert('wrong input for phone number, phone number must be 10 in length')
+    }
+
+    if(fname.length <1){
+      return alert('please first name must be specified')
+    }
+
+    if(lname.length <1){
+      return alert('please last name must be specified')
+    }
+
+
+    alert('Profile updated Successfull')
+    navigation.goBack()
+  }
+
+  const handleUpdatePassword = ()=>{
+
+    if(password.length < 6){
+      return alert('please password shold be strong this meas that password should be greater than 6 in length')
+    }
+    if(password !== cpassword){
+      return alert('both New password and confirm password must be the same')
+    }
+
+    alert('Profile updated Successfull')
+    navigation.goBack()
+  }
   return (
     <View style={styles.container}>
       
@@ -83,10 +114,7 @@ const EditProfile = ({ navigation }) => {
         
           <TouchableOpacity 
             style={[styles.update_btn, {marginBottom: 50}]}
-            onPress={()=>{
-              alert('Profile updated Successfull')
-              navigation.goBack()
-            }}
+            onPress= {handleChangeProfile}
           >
             
             <Text style={[styles.update_btn_txt, {textTransform: 'uppercase'}]}>Update</Text>
@@ -112,10 +140,7 @@ const EditProfile = ({ navigation }) => {
           </View>
           <TouchableOpacity 
             style={styles.update_btn}
-            onPress={()=>{
-                alert('Password updated Successfull')
-                navigation.goBack()
-              }}
+            onPress={handleUpdatePassword}
             >
             <Text style={[styles.update_btn_txt, {textTransform: 'capitalize'}]}>Change Password</Text>
           </TouchableOpacity>
