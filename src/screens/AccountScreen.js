@@ -74,7 +74,10 @@ const AccountScreen = ({ navigation }) => {
           justifyContent: "center",
         }}
       >
-        <TouchableOpacity style={styles.itemIcon}>
+        <TouchableOpacity 
+          style={styles.itemIcon}
+          onPress= {()=> navigation.navigate('EditProfile')}
+        >
           <MaterialCommunityIcons
             name="account"
             style={{ color: "orange", fontSize: 40 }}

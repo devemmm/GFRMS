@@ -34,7 +34,7 @@ const TermAndPrivacy = ({ navigation }) => {
         </View>
       </View>
       <View>
-        <Text style={{ fontSize: 18, marginHorizontal: 15 }}>
+        <Text style={{ fontSize: 18, marginHorizontal: 15, color: 'grey' }}>
           {constants.termAndPrivacy}
         </Text>
       </View>
