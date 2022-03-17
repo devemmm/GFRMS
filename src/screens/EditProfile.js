@@ -13,6 +13,8 @@ const reducer = (state, action)=>{
       return {...state, lname: action.payload}
     case 'phone':
       return {...state, phone: action.payload}
+    case 'oldPassword':
+      return {...state, oldPassword: action.payload}
     case 'password':
       return {...state, password: action.payload}
     case 'cpassword':
@@ -26,7 +28,7 @@ const EditProfile = ({ navigation }) => {
 
   const { state } = useContext(AuthContext);
   const user = state.user
-  const [{fname, lname, phone, password, cpassword}, dispatch] = useReducer(reducer, {fname: user.fname, lname: user.lname, phone : user.phone, password: '', cpassword: ''})
+  const [{fname, lname, phone, oldPassword, password, cpassword}, dispatch] = useReducer(reducer, {fname: user.fname, lname: user.lname, phone : user.phone, oldPassword: '', password: '', cpassword: ''})
 
   const handleChangeProfile = ()=>{
     if(phone.length !== 10){
@@ -123,6 +125,13 @@ const EditProfile = ({ navigation }) => {
 
           <Text style={styles.sectionTitle}>Security Service</Text>
           <View style={styles.section}>
+            <TextInput
+              placeholder="Old Password"
+              style={styles.passwordInput}
+              secureTextEntry
+              value={oldPassword}
+              onChangeText={(value)=> dispatch({type: 'oldPassword', payload: value})}
+            />
             <TextInput
               placeholder="New Password"
               style={styles.passwordInput}
