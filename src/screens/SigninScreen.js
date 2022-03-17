@@ -81,6 +81,8 @@ const SigninScreenn = ({ navigation }) => {
                 } else if (state.errorMessage) {
                   return null;
                 } else {
+                  setEmail("");
+                  setPassword("");
                   signin({ email, password }, () =>
                     navigation.navigate("mainFlow")
                   );

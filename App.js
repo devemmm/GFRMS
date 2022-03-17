@@ -7,7 +7,6 @@ import { Provider as AuthProvider } from "./src/context/AuthContext";
 
 import ResolveScreen from "./src/screens/splash/ResolveScreen";
 import SigninScreen from "./src/screens/SigninScreen";
-import SigninScreen2 from "./src/screens/SigninScreen2";
 import SignupScreen from "./src/screens/SignupScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import HistoryScreen from "./src/screens/HistoryScreen";
@@ -92,13 +91,6 @@ const App = () => {
         <stackNavigator.Screen
           name="Signin"
           component={SigninScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <stackNavigator.Screen
-          name="Signin2"
-          component={SigninScreen2}
           options={{
             headerShown: false,
           }}

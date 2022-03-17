@@ -73,11 +73,16 @@ const SignupScreen = ({ navigation }) => {
           return;
         }
 
+        dispacth({ type: "fname", payload: "" });
+        dispacth({ type: "lname", payload: "" });
+        dispacth({ type: "phone", payload: "" });
+        dispacth({ type: "email", payload: "" });
+        dispacth({ type: "password", payload: "" });
         navigation.navigate("Signin");
       })
       .catch((error) => {
         setIsLoading(false);
-        console.log("error occupied", error.message);
+        alert("error occupied", error.message);
       });
   };
 
