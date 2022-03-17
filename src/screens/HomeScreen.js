@@ -1,10 +1,11 @@
-import React, {useReducer, useEffect} from 'react';
+import React, {useReducer, useContext,useEffect} from 'react';
 import {View, Text, Platform, TouchableOpacity, StatusBar, StyleSheet } from 'react-native';
 import { HEIGHT, WIDTH, diseases } from '../constants/contants'
 import Disease from '../components/Disease';
 import AtmosphareItem from '../components/AtmosphareItem';
 import SwitchButton from '../components/SwitchButton';
 import Clock from '../components/Clock';
+import { Context as AuthContext } from "../context/AuthContext";
 import {gfrsApi} from "../api/gfrsApi"
 
 const reducer = (state, action)=>{
@@ -30,6 +31,8 @@ const reducer = (state, action)=>{
 const HomeScreen = ({navigation})=>{
     const [{temperature, humidity, windSpeed, rainfall, fun, both, heater}, dispatch]= useReducer(reducer, {temperature: 0, humidity: 61, rainfall: 0, windSpeed: 3.9, fun: 'OFF', both: 'OFF', heater: 'OFF'})
 
+    const { state } = useContext(AuthContext);
+    const user = state.user
     useEffect(()=>{
         const interval = setInterval(() => {
 
@@ -130,12 +133,13 @@ const HomeScreen = ({navigation})=>{
 
             <View style={styles.header}>
                 <View style = {styles.greetings}>
-                    <Text style= {{color: '#fff', fontSize: 20, fontWeight: 'bold'}}>Hello, Emmanuel</Text>
-                    <Text style = {{color: '#fff', fontSize: 25}}>It's sunny day!</Text>
+                    <Text style= {{color: '#fff', fontSize: 20, fontWeight: 'bold'}}>Hello, {user.fname}</Text>
+                    <Text style = {{color: '#fff', fontSize: 25}}>Have nice day!</Text>
                 </View>
 
                 <TouchableOpacity
                     style={styles.historyButton}
+                    onPress= {() =>navigation.navigate('History')}
                 >
                     <Text style = {{color: '#fff'}}>icon </Text>
                     <Text style = {{color: '#fff'}}> History</Text>
