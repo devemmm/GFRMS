@@ -77,10 +77,8 @@ const HistoryScreen = ({ navigation }) => {
                     <Text style={styles.headItem}>Fan</Text>
                   </View>
                   {date.action.map((item, index) => {
-
-                    const dateTimeBuffer = item.createdAt.split('T')
-                    const date = dateTimeBuffer[0]
-                    const time = dateTimeBuffer[1].split('.')[0]
+                    
+                    const time = item.createdAt.split('T')[1]
 
                     return (
                       <View key={index.toString()} style={styles.body}>
