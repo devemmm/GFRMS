@@ -91,6 +91,8 @@ const HomeScreen = ({ navigation }) => {
             type: "humidity",
             payload: { humidity: res.data.humidity },
           });
+
+          temperature < 18 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Heater' }) : temperature > 29 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Fun' }) : null
         })
         .catch((error) => {
           alert(`something went wrong because ${error.message}`);
@@ -141,6 +143,7 @@ const HomeScreen = ({ navigation }) => {
           alert(`something went wrong, ${res.errorMessage}`);
         } else {
           alert(`Instruction setted Successfully !!!`);
+          callBack ? callBack(): null;
         }
       })
       .catch((error) => {
@@ -247,13 +250,9 @@ const HomeScreen = ({ navigation }) => {
           marginBottom: 20,
         }}
       >
-        <SwitchButton title="Fun" action={fun} triger={handleButtonPress} />
+        <SwitchButton title="Heater" action={heater} triger={handleButtonPress}/>
         <SwitchButton title="Both" action={both} triger={handleButtonPress} />
-        <SwitchButton
-          title="Heater"
-          action={heater}
-          triger={handleButtonPress}
-        />
+        <SwitchButton title="Fun" action={fun} triger={handleButtonPress} />
       </View>
 
       <View style={{ alignItems: "center" }}>

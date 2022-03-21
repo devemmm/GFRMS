@@ -10,28 +10,31 @@ const HistoryScreen = ({ navigation }) => {
   useEffect(()=>{
 
     const fid = '623093005533f833a0561c5d'
-
-    setIsLoading(true)
-    fetch(`${gfrsApi}/data?fid=${fid}&type=all`, {
-      method: "get",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      }
+    const unsubscribe = navigation.addListener('focus', ()=>{
+      setIsLoading(true)
+      fetch(`${gfrsApi}/data?fid=${fid}&type=all`, {
+        method: "get",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }
+      })
+      .then((response)=> response.json())
+      .then((res)=>{
+        setIsLoading(false)
+        if(res.status !== 200){
+          alert('something went wrong contact system administrator')
+        }
+        setHistory(res.data)
+      })
+      .catch((error)=>{
+        setIsLoading(false)
+        alert(`something went wrong because ${error.message}`)
+      })
     })
-    .then((response)=> response.json())
-    .then((res)=>{
-      setIsLoading(false)
-      if(res.status !== 200){
-        alert('something went wrong contact system administrator')
-      }
-      setHistory(res.data)
-    })
-    .catch((error)=>{
-      setIsLoading(false)
-      alert(`something went wrong because ${error.message}`)
-    })
-  }, [])
+    
+    return unsubscribe;
+  }, [navigation])
   return (
     <View style={styles.container}>
       <View
