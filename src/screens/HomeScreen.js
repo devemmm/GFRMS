@@ -92,7 +92,7 @@ const HomeScreen = ({ navigation }) => {
             payload: { humidity: res.data.humidity },
           });
 
-          temperature < 18 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Heater' }) : temperature > 29 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Fun' }) : null
+          return temperature < 18 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Heater' }) : temperature > 29 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Fun' }) : null
         })
         .catch((error) => {
           alert(`something went wrong because ${error.message}`);
