@@ -50,7 +50,7 @@ const HomeScreen = ({ navigation }) => {
     dispatch,
   ] = useReducer(reducer, {
     temperature: 0,
-    humidity: 61,
+    humidity: 0,
     rainfall: 0,
     windSpeed: 3.9,
     fun: "OFF",
@@ -92,7 +92,7 @@ const HomeScreen = ({ navigation }) => {
             payload: { humidity: res.data.humidity },
           });
 
-          return temperature < 18 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Heater' }) : temperature > 29 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Fun' }) : null
+          // return temperature < 18 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Heater' }) : temperature > 29 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Fun' }) : null
         })
         .catch((error) => {
           alert(`something went wrong because ${error.message}`);
@@ -223,7 +223,7 @@ const HomeScreen = ({ navigation }) => {
             name="Humidity"
           />
         </View>
-        <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+        {/* <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
           <AtmosphareItem
             icon="cloud-moon-rain"
             color="#8e53c9"
@@ -238,7 +238,7 @@ const HomeScreen = ({ navigation }) => {
             dtype="m/s"
             name="windSpeed"
           />
-        </View>
+        </View> */}
       </View>
 
       <View
