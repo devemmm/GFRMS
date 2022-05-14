@@ -22,7 +22,7 @@ const buttomTabNavigator = createBottomTabNavigator();
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 
-const mainFlow = () => {
+const MainFlow = () => {
   return (
     <buttomTabNavigator.Navigator
       initialRouteName="Home"
@@ -109,8 +109,8 @@ const App = () => {
         />
 
         <stackNavigator.Screen
-          name="mainFlow"
-          component={mainFlow}
+          name="MainFlow"
+          component={MainFlow}
           options={{
             headerShown: false,
           }}
