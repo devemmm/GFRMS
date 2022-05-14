@@ -1,4 +1,5 @@
 import React from "react";
+import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -17,6 +18,9 @@ import EditProfile from "./src/screens/EditProfile";
 
 const stackNavigator = createStackNavigator();
 const buttomTabNavigator = createBottomTabNavigator();
+
+LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 const mainFlow = () => {
   return (
