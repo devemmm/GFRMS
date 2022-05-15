@@ -65,7 +65,7 @@ const HomeScreen = ({ navigation }) => {
       let fid = "623093005533f833a0561c5d";
       let type = "last";
 
-      const url = `https://gfrms-api.herokuapp.com/data?fid=${fid}&type=${type}`;
+      const url = `${gfrsApi}/data?fid=${fid}&type=${type}`;
 
       fetch(url, {
         method: "get",
@@ -143,7 +143,7 @@ const HomeScreen = ({ navigation }) => {
           alert(`something went wrong, ${res.errorMessage}`);
         } else {
           alert(`Instruction setted Successfully !!!`);
-          callBack ? callBack(): null;
+          callBack ? callBack() : null;
         }
       })
       .catch((error) => {
@@ -250,7 +250,11 @@ const HomeScreen = ({ navigation }) => {
           marginBottom: 20,
         }}
       >
-        <SwitchButton title="Heater" action={heater} triger={handleButtonPress}/>
+        <SwitchButton
+          title="Heater"
+          action={heater}
+          triger={handleButtonPress}
+        />
         <SwitchButton title="Both" action={both} triger={handleButtonPress} />
         <SwitchButton title="Fun" action={fun} triger={handleButtonPress} />
       </View>
