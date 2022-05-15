@@ -84,7 +84,7 @@ const SigninScreenn = ({ navigation }) => {
                   setEmail("");
                   setPassword("");
                   signin({ email, password }, () =>
-                    navigation.navigate("mainFlow")
+                    navigation.navigate("MainFlow")
                   );
                 }
               }}
