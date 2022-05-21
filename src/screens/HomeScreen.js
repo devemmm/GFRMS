@@ -107,8 +107,6 @@ const HomeScreen = ({ navigation }) => {
             });
           }
 
-          // console.log(temperature > 29 && fun === "OFF");
-
           if (
             res.data.temperature > 29 &&
             res.data.fun === 0 &&
@@ -123,8 +121,6 @@ const HomeScreen = ({ navigation }) => {
               type: "Fun",
             });
           }
-
-          // return temperature < 18 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Heater' }) : temperature > 29 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Fun' }) : null
         })
         .catch((error) => {
           alert(`something went wrong because ${error.message}`);
