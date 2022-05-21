@@ -92,6 +92,38 @@ const HomeScreen = ({ navigation }) => {
             payload: { humidity: res.data.humidity },
           });
 
+          if (
+            res.data.temperature < 18 &&
+            res.data.heater === 0 &&
+            res.data.humidity !== 0
+          ) {
+            console.log(humidity);
+            notifyElectonics({
+              fun,
+              heater,
+              temperature: res.data.temperature,
+              humidity: res.data.humidity,
+              type: "Heater",
+            });
+          }
+
+          // console.log(temperature > 29 && fun === "OFF");
+
+          if (
+            res.data.temperature > 29 &&
+            res.data.fun === 0 &&
+            res.data.humidity !== 0
+          ) {
+            console.log("open fun");
+            notifyElectonics({
+              fun,
+              heater,
+              temperature: res.data.temperature,
+              humidity: res.data.humidity,
+              type: "Fun",
+            });
+          }
+
           // return temperature < 18 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Heater' }) : temperature > 29 ? notifyElectonics({ fun, heater, temperature, humidity, type: 'Fun' }) : null
         })
         .catch((error) => {
