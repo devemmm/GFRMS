@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
+  TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { HEIGHT, WIDTH } from "../constants/contants";
 import { gfrsApi } from "../api/gfrsApi";
+import { Ionicons } from "@expo/vector-icons";
+import { Context as AuthContext } from "../context/AuthContext";
 
 const HistoryScreen = ({ navigation }) => {
   const [history, setHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [fid, setFid] = useState("623093005533f833a0561c5d");
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+  const { state } = useContext(AuthContext);
+
   useEffect(() => {
-    const fid = "623093005533f833a0561c5d";
     const unsubscribe = navigation.addListener("focus", () => {
       setIsLoading(true);
       fetch(`${gfrsApi}/data?fid=${fid}&type=all`, {
@@ -39,6 +46,42 @@ const HistoryScreen = ({ navigation }) => {
 
     return unsubscribe;
   }, [navigation]);
+
+  const handleGenerateReport = () => {
+    try {
+      setIsGeneratingReport(true);
+      fetch(
+        `${gfrsApi}/data?fid=${fid}&type=all&report=true&email=${state.user.email}`,
+        {
+          method: "get",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((res) => {
+          setIsGeneratingReport(false);
+          if (res.status !== 200) {
+            Alert.alert(
+              "error",
+              "something went wrong contact system administrator"
+            );
+          }
+          Alert.alert("success", res.data[0].message);
+          navigation.goBack();
+        })
+        .catch((error) => {
+          setIsGeneratingReport(false);
+          alert(`something went wrong because ${error.message}`);
+        });
+    } catch (error) {
+      setIsGeneratingReport(false);
+      Alert.alert("faild", `something went wrong because ${error.message}`);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View
@@ -47,20 +90,58 @@ const HistoryScreen = ({ navigation }) => {
           width: WIDTH,
           backgroundColor: "green",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-start",
+          flexDirection: "row",
+          width: "100%",
         }}
       >
-        <Text
+        <View
           style={{
-            color: "#fff",
-            textTransform: "uppercase",
-            fontSize: 25,
-            fontWeight: "bold",
+            width: "75%",
+            alignItems: "flex-end",
+            paddingRight: "10%",
           }}
         >
-          History
-        </Text>
+          <Text
+            style={{
+              color: "#fff",
+              textTransform: "uppercase",
+              fontSize: 25,
+              fontWeight: "bold",
+            }}
+          >
+            History
+          </Text>
+        </View>
+
+        {isGeneratingReport ? null : (
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#fff",
+              width: "23%",
+              flexDirection: "row",
+              alignItems: "center",
+              // justifyContent: "center",
+              marginRight: 10,
+              borderRadius: 10,
+              paddingLeft: 8,
+            }}
+            onPress={handleGenerateReport}
+          >
+            <Ionicons name="document-text" size={24} color="black" />
+            <Text>Report</Text>
+          </TouchableOpacity>
+        )}
       </View>
+
+      {isGeneratingReport ? (
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <ActivityIndicator size="large" color="green" />
+          <Text>loading ...</Text>
+        </View>
+      ) : null}
 
       {isLoading ? (
         <View
