@@ -94,6 +94,13 @@ const HomeScreen = ({ navigation }) => {
             payload: { humidity: res.data.humidity },
           });
 
+          if (res.data.temperature < 18 && res.data.heater === 0) {
+            alert("Temperature is too low please turn on heater")
+          }
+
+          if (res.data.temperature > 29 && res.data.fun === 0) {
+            alert("Temperature is too hight please turn on fun")
+          }
 
           // if (automatic === true) {
           //   console.log("automatic")
