@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect } from "react";
+import React, { useReducer, useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { HEIGHT, WIDTH } from "../constants/contants";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import Disease from "../components/Disease";
 import AtmosphareItem from "../components/AtmosphareItem";
 import SwitchButton from "../components/SwitchButton";
@@ -45,6 +45,7 @@ const reducer = (state, action) => {
 };
 
 const HomeScreen = ({ navigation }) => {
+
   const [
     { temperature, humidity, windSpeed, rainfall, fun, both, heater },
     dispatch,
@@ -60,6 +61,7 @@ const HomeScreen = ({ navigation }) => {
 
   const { state } = useContext(AuthContext);
   const user = state.user;
+  const [automatic, setAutomatic] = useState(false)
   useEffect(() => {
     const interval = setInterval(() => {
       let fid = "623093005533f833a0561c5d";
@@ -92,35 +94,38 @@ const HomeScreen = ({ navigation }) => {
             payload: { humidity: res.data.humidity },
           });
 
-          if (
-            res.data.temperature < 18 &&
-            res.data.heater === 0 &&
-            res.data.humidity !== 0
-          ) {
-            console.log(humidity);
-            notifyElectonics({
-              fun,
-              heater,
-              temperature: res.data.temperature,
-              humidity: res.data.humidity,
-              type: "Heater",
-            });
-          }
 
-          if (
-            res.data.temperature > 29 &&
-            res.data.fun === 0 &&
-            res.data.humidity !== 0
-          ) {
-            console.log("open fun");
-            notifyElectonics({
-              fun,
-              heater,
-              temperature: res.data.temperature,
-              humidity: res.data.humidity,
-              type: "Fun",
-            });
-          }
+          // if (automatic === true) {
+          //   console.log("automatic")
+          //   if (
+          //     res.data.temperature < 18 &&
+          //     res.data.heater === 0 &&
+          //     res.data.humidity !== 0
+          //   ) {
+          //     console.log(humidity);
+          //     notifyElectonics({
+          //       fun,
+          //       heater,
+          //       temperature: res.data.temperature,
+          //       humidity: res.data.humidity,
+          //       type: "Heater",
+          //     });
+          //   }
+
+          //   if (
+          //     res.data.temperature > 29 &&
+          //     res.data.fun === 0 &&
+          //     res.data.humidity !== 0
+          //   ) {
+          //     notifyElectonics({
+          //       fun,
+          //       heater,
+          //       temperature: res.data.temperature,
+          //       humidity: res.data.humidity,
+          //       type: "Fun",
+          //     });
+          //   }
+          // }
         })
         .catch((error) => {
           alert(`something went wrong because ${error.message}`);
@@ -268,7 +273,6 @@ const HomeScreen = ({ navigation }) => {
           />
         </View> */}
       </View>
-
       <View
         style={{
           flexDirection: "row",
@@ -287,8 +291,14 @@ const HomeScreen = ({ navigation }) => {
         <SwitchButton title="Fun" action={fun} triger={handleButtonPress} />
       </View>
 
-      <View style={{ alignItems: "center" }}>
-        <Clock />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+
+        <View style={{ height: 20, width: WIDTH / 3 }}></View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+          <Clock />
+          {/* <MaterialIcons name="wb-auto" style={{ fontSize: 40, color: automatic ? "green" : "red", marginLeft: 20 }} onPress={() => setAutomatic(!automatic)} /> */}
+        </View>
+
       </View>
       <View style={{ justifyContent: "flex-end", flex: 1 }}>
         <Disease />
